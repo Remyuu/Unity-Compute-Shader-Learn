@@ -1,0 +1,36 @@
+﻿#pragma kernel CSMain
+#define GROUP_SIZE 256
+#define PI2 6.28318530718
+
+struct Ball
+{
+	float3 position;
+	float3 velocity;
+	float4 color;
+};
+
+RWStructuredBuffer<Ball> ballsBuffer;
+
+float deltaTime;
+int ballsCount;
+float radius;
+float4 limitsXZ;
+float floorY;
+
+#define LIMITS_MIN_X limitsXZ.x
+#define LIMITS_MAX_X limitsXZ.y
+#define LIMITS_MIN_Z limitsXZ.z
+#define LIMITS_MAX_Z limitsXZ.w
+#define LIMITS_MIN_Y floorY
+
+[numthreads(GROUP_SIZE,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	Ball ball = ballsBuffer[id.x];
+
+	ball.position += ball.velocity * deltaTime;
+
+	ballsBuffer[id.x] = ball;
+}
+
+

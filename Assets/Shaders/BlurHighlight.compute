@@ -1,0 +1,32 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel HorzPass
+#pragma kernel Highlight
+
+shared Texture2D<float4> source;
+shared RWTexture2D<float4> horzOutput;
+RWTexture2D<float4> output;
+float radius;
+float edgeWidth;
+float shade;
+float4 center;
+int blurRadius;
+
+float inCircle( float2 pt, float2 center, float radius, float edgeWidth ){
+    float len = length(pt - center);
+    return 1.0 - smoothstep(radius-edgeWidth, radius, len);
+}
+
+[numthreads(8, 8, 1)]
+void HorzPass(uint3 id : SV_DispatchThreadID)
+{
+    
+}
+
+[numthreads(8, 8, 1)]
+void Highlight(uint3 id : SV_DispatchThreadID)
+{
+    float4 color = source[id.xy];
+
+    output[id.xy] = color;
+
+}

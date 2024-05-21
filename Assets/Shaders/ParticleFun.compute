@@ -1,0 +1,38 @@
+﻿#pragma kernel CSParticle
+
+
+// Variables set from the CPU 
+float deltaTime;
+float2 mousePosition;
+
+uint rng_state;
+
+uint rand_xorshift()
+{
+	// Xorshift algorithm from George Marsaglia's paper
+	rng_state ^= (rng_state << 13);
+	rng_state ^= (rng_state >> 17);
+	rng_state ^= (rng_state << 5);
+	return rng_state;
+}
+
+void respawn(uint id)
+{
+	rng_state = id;
+	float tmp = (1.0 / 4294967296.0);
+	float f0 = float(rand_xorshift()) * tmp - 0.5;
+	float f1 = float(rand_xorshift()) * tmp - 0.5;
+	float f2 = float(rand_xorshift()) * tmp - 0.5;
+	float3 normalF3 = normalize(float3(f0, f1, f2)) * 0.8f;
+	normalF3 *= float(rand_xorshift()) * tmp;
+	/*particleBuffer[id].position = float3(normalF3.x + mousePosition.x, normalF3.y + mousePosition.y, normalF3.z + 3.0);
+	// reset the life of this particle
+	particleBuffer[id].life = 4;
+	particleBuffer[id].velocity = float3(0,0,0);*/
+}
+
+[numthreads(256, 1, 1)]
+void CSParticle(uint3 id : SV_DispatchThreadID)
+{
+	
+}

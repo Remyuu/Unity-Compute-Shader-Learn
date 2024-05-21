@@ -1,0 +1,27 @@
+﻿#pragma kernel CSMain
+#define GROUP_SIZE 256
+
+struct Boid
+{
+	float3 position;
+	float3 direction;
+};
+
+RWStructuredBuffer<Boid> boidsBuffer;
+
+float time;
+float deltaTime;
+float rotationSpeed;
+float boidSpeed;
+float boidSpeedVariation;
+float3 flockPosition;
+float neighbourDistance;
+int boidsCount;
+
+[numthreads(GROUP_SIZE,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	
+}
+
+
