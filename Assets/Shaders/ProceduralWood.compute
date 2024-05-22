@@ -1,6 +1,8 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
+#include "noiseSimplex.cginc"
+
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
 RWTexture2D<float4> Result;
@@ -17,8 +19,9 @@ float contrast;
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
     float3 pos = (((float3)id)/(float)texResolution) * 2.0;
-    
-    float delta = 0.5;
+    float n = snoise(pos);
+    float ring = frac(noiseScale * n);
+    float delta = pow(ring, ringScale) + n;
 
     Result[id.xy] = lerp(darkColor, paleColor, delta);
 }

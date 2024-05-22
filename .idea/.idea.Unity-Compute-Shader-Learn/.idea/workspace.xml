@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a96b1bc-baec-4c9e-8996-5710a362ce71" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/OrbitingStars.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/OrbitingStars.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/OrbitingStars.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/OrbitingStars.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/OrbitingStars.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/OrbitingStars.compute" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Unity-Compute-Shader-Learn/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Unity-Compute-Shader-Learn/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MeshDeform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MeshDeform.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/MeshDeform.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/MeshDeform.compute" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/ProceduralWood.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/ProceduralWood.compute" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/SimpleNoise.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/SimpleNoise.compute" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,28 +31,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;L2__Using__Buffer&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "L2__GetData__From__Buffer",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;/Users/remooo/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache&quot;,
-      &quot;/Users/remooo/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache&quot;,
-      &quot;/Users/remooo/.local/share/Symbols/src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/Users/remooo/Library/Application Support/JetBrains/Rider2023.2/resharper-host/DecompilerCache",
+      "/Users/remooo/Library/Application Support/JetBrains/Rider2023.2/resharper-host/SourcesCache",
+      "/Users/remooo/.local/share/Symbols/src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.20f1c1/Unity.app/Contents/MacOS/Unity" />
@@ -98,7 +100,7 @@
       <option name="presentableId" value="Default" />
       <updated>1716287526843</updated>
       <workItem from="1716287528133" duration="16528000" />
-      <workItem from="1716361819831" duration="3644000" />
+      <workItem from="1716361819831" duration="8386000" />
     </task>
     <servers />
   </component>
