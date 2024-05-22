@@ -1,0 +1,50 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+#pragma kernel SolidRed
+#pragma kernel SplitScreen
+#pragma kernel Circle
+
+
+
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+int texResolution;
+
+
+float inCircle( float2 xy, float radius)
+{
+    return (length(xy)<radius)? 1.0 : 0.0;
+}
+
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+
+    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+    // Result[id.xy] = float4(1,0,0,0);
+}
+
+[numthreads(8,8,1)]
+void SolidRed (uint3 id : SV_DispatchThreadID)
+{
+    Result[id.xy] = float4(1,0,0,0);
+}
+
+[numthreads(8,8,1)]
+void SplitScreen (uint3 id : SV_DispatchThreadID)
+{
+    int halfRes = texResolution >> 1;
+    Result[id.xy] = float4(step(halfRes, id.x),step(halfRes, id.y),0,1);
+}
+
+[numthreads(8,8,1)]
+void Circle (uint3 id : SV_DispatchThreadID)
+{
+    int halfRes = texResolution >> 1;
+    int isInside = inCircle((float2)((int2)id.xy-halfRes), (float)(halfRes>>1));
+    Result[id.xy] = float4(0.0,isInside ,0,1);
+}
