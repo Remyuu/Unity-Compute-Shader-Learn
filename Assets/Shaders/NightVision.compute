@@ -2,7 +2,7 @@
 #pragma kernel CSMain
 
 Texture2D<float4> source;
-RWTexture2D<float4> output;
+RWTexture2D<float4> outputrt;
 float radius;
 float edgeWidth;
 int lines;
@@ -25,7 +25,39 @@ float inCircle( float2 pt, float2 center, float radius, float edgeWidth ){
 [numthreads(8, 8, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
-    float3 finalColor = source[id.xy].rgb;
-           
-    output[id.xy] = float4(finalColor, 1);
+    uint2 index = (uint2(id.x, id.y)/6) * 6;
+
+    float noise = random(id.xy, time);
+    float3 srcColor = lerp(source[id.xy].rgb*2, source[index],noise);
+    // float3 finalColor = srcColor;
+
+    // float3 grayScale = (srcColor.r+srcColor.g+srcColor.b)/3.0;
+    float3 grayScale = srcColor.r*0.299f+srcColor.g*0.587f+srcColor.b*0.114f;
+    
+    float3 tinted = grayScale * tintColor.rgb;
+    float3 finalColor = lerp(srcColor, tinted, tintStrength);
+
+    float uvY = (float)id.y/(float)source.Length.y;
+    float scanline = saturate(smoothstep(0.1,0.2,frac(uvY * lines + time * 3)));
+    finalColor = lerp(source[id.xy].rgb*0.5, finalColor, scanline);
+    // finalColor =scanline;
+
+    // float2 pt = (float2)id.xy;
+    // float2 center = (float2)(source.Length >> 1);
+    // float inVision = inCircle(pt, center, radius, edgeWidth);
+    // float3 blackColor = float3(0,0,0);
+    // finalColor = lerp(blackColor, finalColor, inVision);
+
+    float2 pt = (float2)id.xy;
+    float2 centerLeft = float2(source.Length.x / 3.0, source.Length.y /2);
+    float2 centerRight = float2(source.Length.x / 3.0 * 2.0, source.Length.y /2);
+    float inVisionLeft = inCircle(pt, centerLeft, radius, edgeWidth);
+    float inVisionRight = inCircle(pt, centerRight, radius, edgeWidth);
+    float3 blackColor = float3(0,0,0);
+    // float inVision = max(inVisionLeft, inVisionRight);
+    float inVision = saturate(inVisionLeft + inVisionRight);
+    finalColor = lerp(blackColor, finalColor, inVision);
+    
+    
+    outputrt[id.xy] = float4(finalColor, 1);
 }

@@ -86,11 +86,13 @@ public class GaussianBlurHighlight : BaseCompletePP
            
         SetProperties();
 
-        UpdateWeightsBuffer();
+        // UpdateWeightsBuffer();
     }
 
     protected void SetProperties()
     {
+        UpdateWeightsBuffer();
+
         float rad = (radius / 100.0f) * texSize.y;
         shader.SetFloat("radius", rad);
         shader.SetFloat("edgeWidth", rad * softenEdge / 100.0f);

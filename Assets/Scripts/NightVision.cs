@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class NightVision : BaseCompletePP
+public class NightVision : BasePP
 {
     [Range(0.0f, 100.0f)]
     public float radius = 70;
@@ -12,9 +12,17 @@ public class NightVision : BaseCompletePP
     [Range(0.0f, 100.0f)]
     public float softenEdge = 3;
     public Color tint = Color.green;
-    [Range(50, 500)]
+    [Range(0, 200)]
     public int lines = 100;
 
+
+    protected override void Init()
+    {
+
+        kernelName = "CSMain";
+        base.Init();
+    }
+    
     private void OnValidate()
     {
         if(!init)

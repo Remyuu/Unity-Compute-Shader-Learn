@@ -3,7 +3,7 @@
 #pragma kernel Highlight
 
 shared Texture2D<float4> source;
- RWTexture2D<float4> horzOutput;
+share RWTexture2D<float4> horzOutput;
 RWTexture2D<float4> outputrt;
 float radius;
 float edgeWidth;
