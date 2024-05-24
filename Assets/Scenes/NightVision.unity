@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 7200000, guid: d17f41014246c4a01a09b636c4825554, type: 3}
-  radius: 47.1
+  radius: 46.2
   tintStrength: 0.712
   softenEdge: 24.5
   tint: {r: 0.24226624, g: 0.8301887, b: 0.13705944, a: 1}
