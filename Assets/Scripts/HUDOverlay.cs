@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class HUDOverlay : BaseCompletePP
+public class HUDOverlay : BasePP
 {
     public Color axisColor = new Color(0.8f, 0.8f, 0.8f, 1);
     public Color sweepColor = new Color(0.1f, 0.3f, 0.1f, 1);

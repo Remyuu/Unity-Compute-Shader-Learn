@@ -5,7 +5,7 @@
 #define PI2 6.28318530718
 
 Texture2D<float4> source;
-RWTexture2D<float4> output;
+RWTexture2D<float4> outputrt;
 float time;
 float4 axisColor;
 float4 sweepColor;
@@ -14,28 +14,47 @@ float getDelta(float x){
     return (sin(x)+1.0)/2.0;
 }
 
-float sweep(float2 pt, float2 center, float radius, float line_width, float edge_thickness){
-    float2 d = pt - center;
-    float theta = time;
-    float2 p = float2(cos(theta), -sin(theta))*radius;
-    float h = clamp( dot(d,p)/dot(p,p), 0.0, 1.0 );
-    //h = dot(d,p)/dot(p,p);
-    float l = length(d - p*h);
+float sweep(float2 position, float2 center, float radius, float lineWidth, float edgeWidth) {
+    float2 direction = position - center;
+    float theta = time + 6.3;
+    float2 circlePoint = float2(cos(theta), -sin(theta)) * radius;
+    float projection = clamp(dot(direction, circlePoint) / dot(circlePoint, circlePoint), 0.0, 1.0);
+    float lineDistance = length(direction - circlePoint * projection);
 
-    return 1.0 - smoothstep(line_width, line_width+edge_thickness, l);
+    float gradient = 0.0;
+    const float maxGradientAngle = PI * 0.5;
+
+    if (length(direction) < radius) {
+        float angle = fmod(theta + atan2(direction.y, direction.x), PI2);
+        gradient = clamp(maxGradientAngle - angle, 0.0, maxGradientAngle) / maxGradientAngle * 0.5;
+    }
+
+    return gradient + 1.0 - smoothstep(lineWidth, lineWidth + edgeWidth, lineDistance);
 }
 
-float circle(float2 pt, float2 center, float radius, float line_width, float edge_thickness){
-    pt -= center;
-    float len = length(pt);
+float circle(float2 position, float2 center, float radius, float lineWidth, float edgeWidth){
+    position -= center;
+    float len = length(position);
     //Change true to false to soften the edge
-    float result = smoothstep(radius-line_width/2.0-edge_thickness, radius-line_width/2.0, len) - smoothstep(radius + line_width/2.0, radius + line_width/2.0 + edge_thickness, len);
+    float result = smoothstep(radius - lineWidth / 2.0 - edgeWidth, radius - lineWidth / 2.0, len) - smoothstep(radius + lineWidth / 2.0, radius + lineWidth / 2.0 + edgeWidth, len);
 
     return result;
 }
 
-float onLine(float x, float y, float line_width, float edge_width){
-    return smoothstep(x-line_width/2.0-edge_width, x-line_width/2.0, y) - smoothstep(x+line_width/2.0, x+line_width/2.0+edge_width, y);
+// float onLine(float x, float y, float line_width, float edge_width){
+//     return smoothstep(x-line_width/2.0-edge_width, x-line_width/2.0, y) - smoothstep(x+line_width/2.0, x+line_width/2.0+edge_width, y);
+//     // return smoothstep(x-line_width/2.0-edge_width, x-line_width/2.0, y);
+// }
+
+float onLine(float position, float center, float lineWidth, float edgeWidth) {
+    float halfWidth = lineWidth / 2.0;
+    float edge0 = center - halfWidth - edgeWidth;
+    float edge1 = center - halfWidth;
+    float edge2 = center + halfWidth;
+    float edge3 = center + halfWidth + edgeWidth;
+    // return smoothstep(edge0, edge1, position);
+    // return smoothstep(edge2, edge3, position);
+    return smoothstep(edge0, edge1, position) - smoothstep(edge2, edge3, position);
 }
 
 float polygon(float2 pt, float2 center, float radius, int sides, float rotate, float edge_thickness){
@@ -68,11 +87,19 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         center.y /= aspectRatio;
     }
 
-    float3 color = onLine(uv.y, center.y, 0.002, 0.001) * axisColor.rgb;//xAxis
+    float3 color = float3(0.0f,0.0f,0.0f);
+    color += onLine(uv.y, center.y, 0.002, 0.001) * axisColor.rgb;//xAxis
+    color += onLine(uv.x, center.x, 0.002, 0.001) * axisColor.rgb;//yAxis
+    color += circle(uv, center, 0.2f, 0.002, 0.001) * axisColor.rgb;
+    color += circle(uv, center, 0.3f, 0.002, 0.001) * axisColor.rgb;
+    color += circle(uv, center, 0.4f, 0.002, 0.001) * axisColor.rgb;
+    color += sweep(uv, center, 0.45f, 0.003, 0.001) * sweepColor.rgb;
+
+
     //TO DO: Add code here
 
     float alpha = saturate(color.r + color.g + color.b);
     float3 finalColor = lerp(source[id.xy].rgb, color, alpha);
 
-    output[id.xy] = float4(finalColor, 1.0);
+    outputrt[id.xy] = float4(finalColor, 1.0);
 }
