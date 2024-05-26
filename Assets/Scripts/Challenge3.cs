@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Challenge3 : BaseCompletePP
+public class Challenge3 : BasePP
 {
     [Range(0.0f, 1.0f)]
     public float height = 0.3f;
@@ -17,6 +17,13 @@ public class Challenge3 : BaseCompletePP
 
     Vector4 center;
 
+    
+    // protected override void Init()
+    // {
+    //     kernelName = "CSMain";
+    //     base.Init();
+    // }
+    
     private void OnValidate()
     {
         if(!init)

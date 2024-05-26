@@ -2,7 +2,7 @@
 #pragma kernel CSMain
 
 Texture2D<float4> source;
-RWTexture2D<float4> output;
+RWTexture2D<float4> outputrt;
 float tintHeight;
 float shade;
 float edgeWidth;
@@ -13,8 +13,16 @@ float tintStrength;
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
     float4 srcColor = source[id.xy];
-    float4 color = srcColor;
+    float4 color;
 
-    output[id.xy] = color;
+    if (id.y<(uint)tintHeight){
+        float3 grayScale = (srcColor.r + srcColor.g + srcColor.b) * 0.33 * tintColor.rgb;
+        float3 shaded = lerp(srcColor.rgb, grayScale, tintStrength) * shade;
+        float srcAmount = smoothstep(tintHeight-edgeWidth, (float)tintHeight, (float)id.y);
+        color = lerp(float4(shaded, 1), srcColor, srcAmount);
+    }else{
+        color = srcColor;
+    }
 
+    outputrt[id.xy] = color;
 }

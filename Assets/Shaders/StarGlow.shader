@@ -40,5 +40,21 @@
 
             ENDCG
         }
+
+        Pass
+        {
+            CGPROGRAM
+
+            #pragma vertex vert_img
+            #pragma fragment frag
+
+            fixed4 frag(v2f_img input) : SV_Target
+            {
+                float4 color = tex2D(_MainTex, input.uv);
+                return max(color - BRIGHTNESS_THRESHOLD, 0) * INTENSITY;
+            }
+
+            ENDCG
+        }
     }
 }
