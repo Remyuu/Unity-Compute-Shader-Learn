@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569278be8283441f2baf0a52f321bd76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleCount: 1000000
+  particleCount: 200000
   material: {fileID: 2100000, guid: 8aab1aa4f1dea47639d5caf561297a33, type: 2}
   shader: {fileID: 7200000, guid: 14886d445ceca4afa808d01d70cb0fb6, type: 3}
   pointSize: 1
