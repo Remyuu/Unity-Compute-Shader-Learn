@@ -692,7 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 7200000, guid: 5906d19d9e143491a84c9c14422420e5, type: 3}
-  height: 0.4
+  height: 0.337
   softenEdge: 62.4
   shade: 0.504
   tintStrength: 0.718

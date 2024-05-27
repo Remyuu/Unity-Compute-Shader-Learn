@@ -1,12 +1,24 @@
 ﻿#pragma kernel CSParticle
 
+// 定义粒子数据结构
+struct Particle
+{
+	float3 position;  // 粒子的位置
+	float3 velocity;  // 粒子的速度
+	float life;       // 粒子的剩余生命时间
+};
 
-// Variables set from the CPU 
-float deltaTime;
-float2 mousePosition;
+// 用于存储和更新粒子数据的结构化缓冲区，可从GPU读写
+RWStructuredBuffer<Particle> particleBuffer;
 
+// 从CPU设置的变量
+float deltaTime;       // 从上一帧到当前帧的时间差
+float2 mousePosition;  // 当前鼠标位置
+
+// 用于生成随机数的状态变量
 uint rng_state;
 
+// 生成随机数的函数，使用xorshift算法
 uint rand_xorshift()
 {
 	// Xorshift algorithm from George Marsaglia's paper
@@ -16,23 +28,42 @@ uint rand_xorshift()
 	return rng_state;
 }
 
+// 重置指定id的粒子
 void respawn(uint id)
 {
-	rng_state = id;
-	float tmp = (1.0 / 4294967296.0);
+	rng_state = id;  // 初始化随机数生成器的状态
+	float tmp = (1.0 / 4294967296.0);  // 转换因子
+	// 生成单位球内的随机方向
 	float f0 = float(rand_xorshift()) * tmp - 0.5;
 	float f1 = float(rand_xorshift()) * tmp - 0.5;
 	float f2 = float(rand_xorshift()) * tmp - 0.5;
 	float3 normalF3 = normalize(float3(f0, f1, f2)) * 0.8f;
 	normalF3 *= float(rand_xorshift()) * tmp;
-	/*particleBuffer[id].position = float3(normalF3.x + mousePosition.x, normalF3.y + mousePosition.y, normalF3.z + 3.0);
-	// reset the life of this particle
-	particleBuffer[id].life = 4;
-	particleBuffer[id].velocity = float3(0,0,0);*/
+	// 设置粒子的新位置和生命值
+	particleBuffer[id].position = float3(normalF3.x + mousePosition.x, normalF3.y + mousePosition.y, normalF3.z + 3.0);
+	particleBuffer[id].life = 4;  // 重置生命值
+	particleBuffer[id].velocity = float3(0,0,0);  // 重置速度
 }
 
+// 定义每个线程块中的线程数，这里是256个线程
 [numthreads(256, 1, 1)]
 void CSParticle(uint3 id : SV_DispatchThreadID)
 {
-	
+	Particle particle = particleBuffer[id.x];
+	// 根据deltaTime减少粒子的生命值
+	particle.life -= deltaTime;
+
+	// 计算与鼠标位置的向量差，并规范化方向
+	float3 delta = float3(mousePosition.xy, 3) - particle.position;
+	float3 dir = normalize(delta);
+
+	// 更新粒子速度和位置
+	particle.velocity += dir;
+	particle.position += particle.velocity * deltaTime;
+
+	// 写回更新后的粒子数据
+	particleBuffer[id.x] = particle;
+    
+	// 如果粒子生命值小于0，则重新生成粒子
+	if (particle.life < 0) respawn(id.x);
 }
