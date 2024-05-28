@@ -71,12 +71,12 @@ public class SimpleFlocking : MonoBehaviour
         boidsBuffer.SetData(boidsArray);
 
         shader.SetBuffer(kernelHandle, "boidsBuffer", boidsBuffer);
-        shader.SetFloat("rotationSpeed", rotationSpeed);
-        shader.SetFloat("boidSpeed", boidSpeed);
-        shader.SetFloat("boidSpeedVariation", boidSpeedVariation);
-        shader.SetVector("flockPosition", target.transform.position);
-        shader.SetFloat("neighbourDistance", neighbourDistance);
-        shader.SetInt("boidsCount", boidsCount);
+        shader.SetFloat("rotationSpeed", rotationSpeed); // 旋转速度。
+        shader.SetFloat("boidSpeed", boidSpeed); // Boid速度。
+        shader.SetFloat("neighbourDistance", neighbourDistance); // 邻近距离。
+        shader.SetFloat("boidSpeedVariation", boidSpeedVariation); // 速度变化。
+        shader.SetInt("boidsCount", boidsCount); // Boid的数量。
+        shader.SetVector("flockPosition", target.transform.position); // 群体的移动目标。
     }
 
     void Update()
