@@ -26,7 +26,9 @@ struct Boid
 	float3 position;
 	float3 direction;
 	float noise_offset;
+	float speed;
 	float frame;
+	float3 padding;
 };
 
 RWStructuredBuffer<Boid> boidsBuffer;
@@ -68,7 +70,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
 		float3 offset = boid.position - tempBoid_position;
 		float dist = max(length(offset), 0.000001);
-		
+			
 		if (dist < neighbourDistance)
 		{
 			separation += offset * (1.0/dist - 1.0/neighbourDistance);
@@ -90,6 +92,9 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 	boid.direction = lerp(direction, normalize(boid_dir), ip);
 
 	boid.position += boid.direction * velocity * deltaTime;
+ 
+	boid.frame = boid.frame + velocity * deltaTime * boidFrameSpeed;
+	if (boid.frame >= numOfFrames) boid.frame -= numOfFrames;
 	
 	boidsBuffer[id.x] = boid;
 }
