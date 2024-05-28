@@ -159,7 +159,7 @@ MonoBehaviour:
   boidSpeedVariation: 2
   boidPrefab: {fileID: 5203919481050334109, guid: 6162ad78227b64a999f512c41ed2c247,
     type: 3}
-  boidsCount: 500
+  boidsCount: 1000
   spawnRadius: 2
   target: {fileID: 204301668}
 --- !u!4 &204301668

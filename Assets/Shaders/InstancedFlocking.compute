@@ -6,7 +6,7 @@ float hash( float n )
 	return frac(sin(n)*43758.5453);
 }
 
-// The noise function returns a value in the range 0 -> 1
+// The noise function returns a value in the range -1.0f -> 1.0f 
 float noise1( float3 x )
 {
 	float3 p = floor(x);
@@ -45,7 +45,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 	uint instanceId = id.x;
 	Boid boid = boidsBuffer[instanceId];
 
-	float velocity = boidSpeed;
+	float noise = clamp(noise1(time / 100.0 + boid.noise_offset), -1, 1) * 2.0 - 1.0;
+	float velocity = boidSpeed * (1.0 + noise * boidSpeedVariation);
 
 	float3 boid_pos = boid.position;
 	float3 boid_dir = boid.direction;
@@ -60,14 +61,16 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 		if (i == instanceId)
 			continue;
 		
-		float3 tempBoid_position = boidsBuffer[i].position;
-
-		float3 offset = boid.position - tempBoid_position;
-		float dist = max(length(offset), 0.000001);
-		
-		if (dist < neighbourDistance)
+		if (distance(boid_pos, boidsBuffer[i].position) < neighbourDistance)
 		{
-			separation += offset * (1.0/dist - 1.0/neighbourDistance);
+			float3 tempBoid_position = boidsBuffer[i].position;
+
+			float3 offset = boid.position - tempBoid_position;
+			float dist = length(offset);
+			if (dist<neighbourDistance){
+				dist = max(dist, 0.000001);//Avoid division by zero
+				separation += offset * (1.0/dist - 1.0/neighbourDistance);
+			}
 			alignment += boidsBuffer[i].direction;
 			cohesion += tempBoid_position;
 
@@ -83,10 +86,10 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
 	float3 direction = alignment + separation + cohesion;
 
-	float prop = exp(-rotationSpeed * deltaTime);//This will be around 0.95
-	boid.direction = lerp((direction), normalize(boid_dir), prop);
+	float ip = exp(-rotationSpeed * deltaTime);
+	boid.direction = lerp((direction), normalize(boid_dir), ip);
 
-	boid.position += boid.direction * velocity * deltaTime;
+	boid.position += (boid.direction) * (velocity * deltaTime);
 
 	boidsBuffer[id.x] = boid;
 }
