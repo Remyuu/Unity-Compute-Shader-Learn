@@ -54,19 +54,25 @@
             StructuredBuffer<GrassClump> clumpsBuffer; 
         #endif
 
-        void vert(inout appdata_full v, out Input data)
+        void vert(inout appdata_base v, out Input data)
         {
             UNITY_INITIALIZE_OUTPUT(Input, data);
 
             #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                
+                v.vertex.xyz *= _Scale;
+                float4 rotatedVertex = mul(_Matrix, v.vertex);
+                // v.vertex = rotatedVertex;
+                v.vertex.xyz += _Position;
+                v.vertex = lerp(v.vertex, rotatedVertex, v.texcoord.y);
             #endif
         }
 
         void setup()
         {
             #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                
+                GrassClump clump = clumpsBuffer[unity_InstanceID];
+                _Position = clump.position;
+                _Matrix = create_matrix(clump.position, clump.lean);
             #endif
         }
 

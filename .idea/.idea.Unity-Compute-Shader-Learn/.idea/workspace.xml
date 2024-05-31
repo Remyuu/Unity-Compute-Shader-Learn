@@ -6,15 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6a96b1bc-baec-4c9e-8996-5710a362ce71" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Unity-Compute-Shader-Learn/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Unity-Compute-Shader-Learn/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RingHighlight.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RingHighlight.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BasePP.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BasePP.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RingHighlight.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RingHighlight.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/BlurHighlight.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/BlurHighlight.compute" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/GaussianBlurHighlight.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/GaussianBlurHighlight.compute" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/RingHighlight.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/RingHighlight.compute" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/Search.settings" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Search.settings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Models/flying_sparrow.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Models/flying_sparrow.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SkinnedFlocking.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SkinnedFlocking.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +19,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/PureCPUOrbitingStars.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///Applications/Unity/Hub/Editor/2022.3.20f1c1/Unity.app/Contents/CGIncludes/UnityCG.cginc" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4308457bf214ac9bc3ad5dfb8450274175400/0a/2e0e2729/Graphics.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4308457bf214ac9bc3ad5dfb8450274175400/10/d693ebc7/Vector3.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4308457bf214ac9bc3ad5dfb8450274175400/38/51255832/ComputeBuffer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4308457bf214ac9bc3ad5dfb8450274175400/49/d0bb655b/SkinnedMeshRenderer.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -42,7 +40,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "L2__Mesh__Cube2Sphere",
+    "git-widget-placeholder": "L4__Skinned",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -104,7 +102,8 @@
       <option name="presentableId" value="Default" />
       <updated>1716287526843</updated>
       <workItem from="1716287528133" duration="16528000" />
-      <workItem from="1716361819831" duration="13341000" />
+      <workItem from="1716361819831" duration="85178000" />
+      <workItem from="1717125596034" duration="2578000" />
     </task>
     <servers />
   </component>

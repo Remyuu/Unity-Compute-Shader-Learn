@@ -42,7 +42,7 @@ public class SkinnedFlocking : MonoBehaviour {
     public float neighbourDistance = 1f;
     public float boidSpeedVariation = 1f;
     public float boidFrameSpeed = 10f;
-    public bool frameInterpolation = true;
+    public bool frameInterpolation = false;
 
     Mesh boidMesh;
     
