@@ -407,9 +407,9 @@ MonoBehaviour:
   mesh: {fileID: 8254687373856176130, guid: c61a46b1fba4e4858a25c0da491e87d9, type: 3}
   material: {fileID: 2100000, guid: 9f9dc5d93b9fe4b89b6cafb050f59218, type: 2}
   shader: {fileID: 7200000, guid: e09c19d555c9f4897b9640df633a7b3f, type: 3}
-  density: 1
+  density: 0.106
   scale: 1
-  maxLean: 24.6
+  maxLean: 10
 --- !u!23 &2071463610
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -470,7 +470,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1499175, y: 1, z: 0.29264998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
