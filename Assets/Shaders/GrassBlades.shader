@@ -28,6 +28,8 @@
             float2 uv_MainTex;
         };
 
+        float _HeightOffset;
+        float _WidthOffset;
         half _Glossiness;
         half _Metallic;
         fixed4 _Color;
@@ -36,6 +38,49 @@
         float _Fade;
         float4x4 _Matrix;
         float3 _Position;
+        
+        #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+        struct GrassBlade
+        {
+            float3 position;
+            float height_offset;
+            float width_offset;
+            float dir;
+            float fade;
+            float4 quaternion;
+            float padding;
+        };
+        StructuredBuffer<GrassBlade> bladesBuffer;
+        
+        float4x4 quaternion_to_matrix(float4 quat)
+        {
+            float4x4 m = float4x4(float4(0, 0, 0, 0), float4(0, 0, 0, 0), float4(0, 0, 0, 0), float4(0, 0, 0, 0));
+
+            float x = quat.x, y = quat.y, z = quat.z, w = quat.w;
+            float x2 = x + x, y2 = y + y, z2 = z + z;
+            float xx = x * x2, xy = x * y2, xz = x * z2;
+            float yy = y * y2, yz = y * z2, zz = z * z2;
+            float wx = w * x2, wy = w * y2, wz = w * z2;
+
+            m[0][0] = 1.0 - (yy + zz);
+            m[0][1] = xy - wz;
+            m[0][2] = xz + wy;
+
+            m[1][0] = xy + wz;
+            m[1][1] = 1.0 - (xx + zz);
+            m[1][2] = yz - wx;
+
+            m[2][0] = xz - wy;
+            m[2][1] = yz + wx;
+            m[2][2] = 1.0 - (xx + yy);
+
+            m[0][3] = _Position.x;
+            m[1][3] = _Position.y;
+            m[2][3] = _Position.z;
+            m[3][3] = 1.0;
+
+            return m;
+        }
 
         float4x4 create_matrix(float3 pos, float theta){
             float c = cos(theta);
@@ -47,7 +92,7 @@
                 0, 0, 0, 1
             );
         }
-        float3x3 transpose(float3x3 m)
+        float3x3 transpose(float4x4 m)
         {
             return float3x3(
                 float3(m[0][0], m[1][0], m[2][0]), // Column 1
@@ -73,16 +118,6 @@
                 );
         }
         
-        #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-            struct GrassBlade
-            {
-                float3 position;
-                float bend;
-                float noise;
-                float fade;
-                float face;
-            };
-            StructuredBuffer<GrassBlade> bladesBuffer; 
         #endif
 
         void vert(inout appdata_full v, out Input data)
@@ -90,30 +125,28 @@
             UNITY_INITIALIZE_OUTPUT(Input, data);
 
             #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-                // 应用模型变换
-                v.vertex = mul(_Matrix, v.vertex);
-            
-                // 计算逆转置矩阵用于法线变换
-                float3x3 normalMatrix = (float3x3)transpose(((float3x3)_Matrix));
-                // 变换法线
-                v.normal = mul(normalMatrix, v.normal);
+            float tempHeight = v.vertex.y * _HeightOffset;
+            float tempWidth = v.vertex.x * _WidthOffset;
+            v.vertex.y += tempHeight;
+            v.vertex.x += tempWidth;
+            // 应用模型顶点变换
+            v.vertex = mul(_Matrix, v.vertex);
+            v.vertex.xyz += _Position;
+            // 计算逆转置矩阵用于法线变换
+            v.normal = mul((float3x3)transpose(_Matrix), v.normal);
             #endif
         }
 
         void setup()
         {
             #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
+                // 获取Compute Shader计算结果
                 GrassBlade blade = bladesBuffer[unity_InstanceID];
-                _Fade = blade.fade;
-                // 创建绕Y轴的旋转矩阵（面向）
-                float4x4 rotationMatrixY = AngleAxis4x4(blade.position, blade.face, float3(0,1,0));
-                // float4x4 rotationMatrixY = AngleAxis4x4(float3(0,0,0), float(_Fa), float3(0,1,0));
-                // 创建绕X轴的旋转矩阵（倾倒）
-                float4x4 rotationMatrixX = AngleAxis4x4(float3(0,0,0), blade.bend, float3(1,0,0));
-                // 合成两个旋转矩阵
-                _Matrix = mul(rotationMatrixY, rotationMatrixX);
-                // 设置位置
-                _Position = blade.position;
+                _HeightOffset = blade.height_offset;
+                _WidthOffset = blade.width_offset;
+                _Fade = blade.fade; // 设置明暗
+                _Matrix = quaternion_to_matrix(blade.quaternion); // 设置最终转转矩阵  
+                _Position = blade.position; // 设置位置
             #endif
         }
 
