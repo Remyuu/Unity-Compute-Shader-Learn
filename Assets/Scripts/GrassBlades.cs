@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class GrassBlades : MonoBehaviour
@@ -188,15 +189,53 @@ public class GrassBlades : MonoBehaviour
         int count = groupSize * (int)threadGroupSize;
 
         bladesArray = new GrassBlade[count];
+        
+        gameObject.AddComponent<MeshCollider>();
 
-        for(int i=0; i<count; i++)
+        RaycastHit hit;
+        Vector3 v = new Vector3();
+        Debug.Log(bounds.center.y + bounds.extents.y);
+        v.y = (bounds.center.y + bounds.extents.y);
+        v = transform.TransformPoint(v);
+        float heightWS = v.y;
+        v.Set(0, 0, 0);
+        v.y = (bounds.center.y - bounds.extents.y);
+        v = transform.TransformPoint(v);
+        float neHeightWS = v.y;
+        float range = heightWS - neHeightWS;
+        // heightWS += 10; // 稍微调高一点
+
+        int index = 0;
+        int loopCount = 0;
+        while (index < count && loopCount < (count * 10))
         {
+            loopCount++;
             Vector3 pos = new Vector3( Random.value * bounds.extents.x * 2 - bounds.extents.x + bounds.center.x,
-                                       0,
-                                       Random.value * bounds.extents.z * 2 - bounds.extents.z + bounds.center.z);
+                0,
+                Random.value * bounds.extents.z * 2 - bounds.extents.z + bounds.center.z);
             pos = transform.TransformPoint(pos);
-            bladesArray[i] = new GrassBlade(pos);
+            pos.y = heightWS;
+            
+
+            if (Physics.Raycast(pos, Vector3.down, out hit))
+            {
+                pos.y = hit.point.y;
+                float deltaHeight = (pos.y - neHeightWS) / range;
+                if (Random.value > deltaHeight)
+                {
+                    GrassBlade blade = new GrassBlade(pos);
+                    bladesArray[index++] = blade;
+                }
+            }
         }
+        // for(int i=0; i<count; i++)
+        // {
+        //     Vector3 pos = new Vector3( Random.value * bounds.extents.x * 2 - bounds.extents.x + bounds.center.x,
+        //                                0,
+        //                                Random.value * bounds.extents.z * 2 - bounds.extents.z + bounds.center.z);
+        //     pos = transform.TransformPoint(pos);
+        //     bladesArray[i] = new GrassBlade(pos);
+        // }
 
         bladesBuffer = new ComputeBuffer(count, SIZE_GRASS_BLADE);
         bladesBuffer.SetData(bladesArray);
