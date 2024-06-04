@@ -21,7 +21,7 @@ public class GrassBlades : MonoBehaviour
             bend = 0;
             noise = Random.Range(0.5f, 1) * 2 - 1;
             fade = Random.Range(0.99f, 1);
-            face = Random.Range(0, Mathf.PI / 2.0f);
+            face = Random.Range(0, 1);
         }
     }
     int SIZE_GRASS_BLADE = 7 * sizeof(float); // adding face
