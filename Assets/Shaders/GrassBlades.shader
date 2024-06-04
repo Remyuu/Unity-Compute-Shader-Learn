@@ -109,7 +109,7 @@
                 float4x4 rotationMatrixY = AngleAxis4x4(blade.position, blade.face, float3(0,1,0));
                 // float4x4 rotationMatrixY = AngleAxis4x4(float3(0,0,0), float(_Fa), float3(0,1,0));
                 // 创建绕X轴的旋转矩阵（倾倒）
-                float4x4 rotationMatrixX = AngleAxis4x4(float3(0,0,0), 0, float3(1,0,0));
+                float4x4 rotationMatrixX = AngleAxis4x4(float3(0,0,0), blade.bend, float3(1,0,0));
                 // 合成两个旋转矩阵
                 _Matrix = mul(rotationMatrixY, rotationMatrixX);
                 // 设置位置
@@ -124,8 +124,8 @@
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color * _Fade * lerp(_BottomColor, _TopColor, IN.uv_MainTex.y);
             o.Albedo = c.rgb;
             // Metallic and smoothness come from slider variables
-            // o.Metallic = _Metallic;
-            // o.Smoothness = _Glossiness;
+            o.Metallic = _Metallic;
+            o.Smoothness = _Glossiness;
         }
         ENDCG
     }
